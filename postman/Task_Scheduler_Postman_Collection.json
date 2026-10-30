@@ -1,0 +1,421 @@
+{
+  "info": {
+    "name": "ON TIME - Task Scheduler & Reminder Management REST API",
+    "description": "Comprehensive Postman test collection for Advanced Java University project. Covers Auth, Tasks, Reminders, Spring JDBC Reports, Versioning (URI, Header, Param), and JSON/XML content negotiation.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication APIs",
+      "item": [
+        {
+          "name": "POST Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Jane Doe\",\n  \"email\": \"jane.doe@example.com\",\n  \"password\": \"Password123\",\n  \"confirmPassword\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "POST User Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "GET Current User (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "POST Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Task APIs (CRUD & All HTTP Methods)",
+      "item": [
+        {
+          "name": "GET All Tasks (v1 / Default)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks"]
+            }
+          }
+        },
+        {
+          "name": "GET All Tasks as XML",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks"]
+            }
+          }
+        },
+        {
+          "name": "POST Create Task (HTTP 201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Complete Advanced Java Project Submission\",\n  \"description\": \"Verify Spring Boot, JSP, and Servlets implementation\",\n  \"category\": \"Study\",\n  \"priority\": \"HIGH\",\n  \"status\": \"IN_PROGRESS\",\n  \"deadline\": \"2026-09-30T17:00:00\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks"]
+            }
+          }
+        },
+        {
+          "name": "GET Single Task by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks", "1"]
+            }
+          }
+        },
+        {
+          "name": "PUT Update Task (Full Replacement)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Task Title\",\n  \"description\": \"Full update via PUT method\",\n  \"category\": \"Work\",\n  \"priority\": \"MEDIUM\",\n  \"status\": \"DONE\",\n  \"completed\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks", "1"]
+            }
+          }
+        },
+        {
+          "name": "PATCH Update Task (Partial)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"priority\": \"HIGH\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks", "1"]
+            }
+          }
+        },
+        {
+          "name": "PATCH Toggle Task Complete",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/1/toggle",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks", "1", "toggle"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Task (HTTP 204 No Content)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. API Versioning Tests",
+      "item": [
+        {
+          "name": "URI Versioning: GET /api/v1/tasks",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/tasks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "tasks"]
+            }
+          }
+        },
+        {
+          "name": "URI Versioning: GET /api/v2/tasks",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v2/tasks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v2", "tasks"]
+            }
+          }
+        },
+        {
+          "name": "Header Versioning: X-API-VERSION: 2",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-VERSION",
+                "value": "2"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks"]
+            }
+          }
+        },
+        {
+          "name": "Parameter Versioning: ?version=2",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks?version=2",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks"],
+              "query": [
+                {
+                  "key": "version",
+                  "value": "2"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Reminder & Scheduler APIs",
+      "item": [
+        {
+          "name": "GET All Reminders",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/reminders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reminders"]
+            }
+          }
+        },
+        {
+          "name": "POST Schedule Reminder",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"taskId\": 1,\n  \"reminderTime\": \"2026-09-30T16:00:00\",\n  \"reminderMessage\": \"Reminder: Submit project documentation\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/reminders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reminders"]
+            }
+          }
+        },
+        {
+          "name": "PATCH Dismiss Reminder",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/api/reminders/1/dismiss",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reminders", "1", "dismiss"]
+            }
+          }
+        },
+        {
+          "name": "POST Trigger Scheduler Manually",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/reminders/run-scheduler",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reminders", "run-scheduler"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Spring JDBC & Raw JDBC Reports",
+      "item": [
+        {
+          "name": "GET Dashboard KPI Stats",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/dashboard/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "dashboard", "stats"]
+            }
+          }
+        },
+        {
+          "name": "GET Spring JDBC Statistics (JdbcTemplate)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/statistics",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reports", "statistics"]
+            }
+          }
+        },
+        {
+          "name": "GET Spring JDBC User Search (JdbcTemplate)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/search-users?keyword=alex",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reports", "search-users"],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "alex"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Raw JDBC Transaction Demo",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/raw-jdbc-transaction",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reports", "raw-jdbc-transaction"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

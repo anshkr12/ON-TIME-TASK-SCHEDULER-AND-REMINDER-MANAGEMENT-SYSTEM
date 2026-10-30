@@ -1,0 +1,25 @@
+<%-- Common JSP Footer Fragment demonstrating JSP Expression Language & Implicit Objects --%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<footer style="background: #0f172a; color: #94a3b8; padding: 2rem; margin-top: 3rem; font-size: 0.85rem; border-top: 1px solid #1e293b;">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem;">
+        <div>
+            <h4 style="color: white; margin-top: 0; margin-bottom: 0.5rem; font-size: 1rem;">ON TIME Task Scheduler</h4>
+            <p style="margin: 0; max-width: 400px;">
+                Advanced Java Academic Showcase: Spring Boot 3, Spring MVC, JSP, JDBC, Servlets, JPA &amp; Spring Security.
+            </p>
+        </div>
+        <div>
+            <h4 style="color: white; margin-top: 0; margin-bottom: 0.5rem; font-size: 1rem;">Syllabus Modules</h4>
+            <div style="display: flex; gap: 1rem;">
+                <a href="${pageContext.request.contextPath}/servlet/http-demo" style="color: #60a5fa; text-decoration: none;">Module 1: Servlets/JDBC</a>
+                <a href="${pageContext.request.contextPath}/dashboard" style="color: #60a5fa; text-decoration: none;">Module 2: JSP Engine</a>
+                <a href="${pageContext.request.contextPath}/api/reports/statistics" style="color: #60a5fa; text-decoration: none;">Module 3: Spring JDBC</a>
+                <a href="${pageContext.request.contextPath}/swagger-ui.html" style="color: #60a5fa; text-decoration: none;">Module 4 &amp; 5: JPA/REST</a>
+            </div>
+        </div>
+    </div>
+    <div style="max-width: 1200px; margin: 1.5rem auto 0; padding-top: 1rem; border-top: 1px solid #334155; text-align: center; font-size: 0.75rem;">
+        Server Context: <code>${pageContext.request.contextPath}</code> | Session ID: <code>${pageContext.session.id}</code> | Protocol: <code>${pageContext.request.protocol}</code>
+    </div>
+</footer>

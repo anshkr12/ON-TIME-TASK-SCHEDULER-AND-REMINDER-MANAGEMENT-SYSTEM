@@ -1,0 +1,36 @@
+<%-- Common JSP Header Fragment demonstrating JSP Directive <%@ include %> --%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<header style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; padding: 1rem 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 38px; height: 38px; border-radius: 8px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem;">
+                &#9200;
+            </div>
+            <div>
+                <h1 style="margin: 0; font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em;">ON TIME</h1>
+                <p style="margin: 0; font-size: 0.75rem; opacity: 0.85;">Plan it. Do it. On time.</p>
+            </div>
+        </div>
+        <nav style="display: flex; gap: 1rem; align-items: center; font-size: 0.875rem;">
+            <a href="${pageContext.request.contextPath}/dashboard" style="color: white; text-decoration: none; font-weight: 600;">Dashboard</a>
+            <a href="${pageContext.request.contextPath}/tasks/view" style="color: white; text-decoration: none;">Tasks</a>
+            <a href="${pageContext.request.contextPath}/reminders/view" style="color: white; text-decoration: none;">Reminders</a>
+            <a href="${pageContext.request.contextPath}/swagger-ui.html" style="color: #fef08a; text-decoration: none;" target="_blank">Swagger API</a>
+            <a href="${pageContext.request.contextPath}/servlet/session-tracking" style="color: #bfdbfe; text-decoration: none;">Servlet Demos</a>
+            <c:choose>
+                <c:when test="${not empty sessionScope.USER_NAME}">
+                    <span style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 9999px; font-size: 0.8rem;">
+                        &#128100; ${sessionScope.USER_NAME}
+                    </span>
+                    <a href="${pageContext.request.contextPath}/logout" style="color: #fca5a5; text-decoration: none; font-weight: bold;">Logout</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/login" style="background: white; color: #1e3a8a; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-weight: bold;">Sign In</a>
+                </c:otherwise>
+            </c:choose>
+        </nav>
+    </div>
+</header>

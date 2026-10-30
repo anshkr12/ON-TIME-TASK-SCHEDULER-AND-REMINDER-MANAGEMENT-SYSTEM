@@ -1,0 +1,6 @@
+{
+  "name": "ON TIME",
+  "description": "Plan it. Do it. On time. Professional task scheduling and reminder management system designed for maximum productivity.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
